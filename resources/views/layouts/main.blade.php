@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>App Name - @yield('title')</title>
+    <title>@yield('title')</title>
 
     <!-- Bootstrap -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -23,13 +23,7 @@
 
 <body>
 
-
-
-    <div class="container">
-        @yield('content')
-    </div>
-
-
+    @yield('content')
 
     <!-- jQuery -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
