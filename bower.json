@@ -1,0 +1,21 @@
+{
+  "name": "big-box",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Zuo Guang <wlnh_2004@163.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/myqiao/big-box",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
