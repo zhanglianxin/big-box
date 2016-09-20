@@ -19,15 +19,17 @@
     <script src="bower_components/html5shiv/dist/html5shiv.min.js"></script>
     <script src="bower_components/respond/dest/respond.min.js"></script>
     <![endif]-->
+
+    <!-- jQuery -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 
 <body>
 
     @yield('content')
 
-    <!-- jQuery -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    
 </body>
 
 </html>
