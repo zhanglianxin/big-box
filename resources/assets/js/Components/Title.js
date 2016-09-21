@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+var React = require('react');
+
 
 /**
- * 主标题
+ * 按钮面板
  */
-class Title extends Component {
+var Title = React.createClass({
 
-    render() {
-
+    render:function() {
         //标题和面板的容器，样式主要是进行了定位
-        let title = {
+        var title = {
             color: '#f0f0f0',
             fontFamily: "幼圆",
             fontWeight: 900,
@@ -23,6 +23,6 @@ class Title extends Component {
             </div>
         );
     }
-}
+});
 
-export default Title;
+module.exports = Title;

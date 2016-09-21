@@ -58,7 +58,7 @@
 
 	var _Container2 = _interopRequireDefault(_Container);
 
-	var _Footer = __webpack_require__(176);
+	var _Footer = __webpack_require__(177);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -21440,31 +21440,12 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
+	var React = __webpack_require__(1);
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Title = __webpack_require__(173);
-
-	var _Title2 = _interopRequireDefault(_Title);
-
-	var _ButtonPanel = __webpack_require__(174);
-
-	var _ButtonPanel2 = _interopRequireDefault(_ButtonPanel);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var Title = __webpack_require__(173);
+	var ButtonPanel = __webpack_require__(174);
+	var FetchPanel = __webpack_require__(175);
+	var SharePanel = __webpack_require__(176);
 
 	/**
 	 * 住显示区的容器，由标题和面板组成，面板是可变的，有三种面板
@@ -21472,38 +21453,43 @@
 	 * 获取面板：有一个提取码的输入框
 	 * 分享面板：还没有具体设计
 	 */
-	var Container = function (_Component) {
-	    _inherits(Container, _Component);
 
-	    function Container() {
-	        _classCallCheck(this, Container);
+	var Container = React.createClass({
+	    displayName: 'Container',
 
-	        return _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).apply(this, arguments));
+
+	    getInitialState: function getInitialState() {
+	        return { panel: 0 };
+	    },
+
+	    changePanel: function changePanel(num) {
+	        this.setState({ panel: num });
+	    },
+
+	    render: function render() {
+	        //标题和面板的容器，样式主要是进行了定位
+	        var container = {
+	            position: 'absolute',
+	            top: '10%',
+	            left: '2%'
+	        };
+
+	        var p;
+	        if (this.state.panel == 0) p = React.createElement(ButtonPanel, {
+	            callbackChangePanel: this.changePanel });else if (this.state.panel == 1) p = React.createElement(FetchPanel, {
+	            callbackChangePanel: this.changePanel });else p = React.createElement(SharePanel, {
+	            callbackChangePanel: this.changePanel });
+
+	        return React.createElement(
+	            'div',
+	            { style: container },
+	            React.createElement(Title, null),
+	            p
+	        );
 	    }
+	});
 
-	    _createClass(Container, [{
-	        key: 'render',
-	        value: function render() {
-	            //标题和面板的容器，样式主要是进行了定位
-	            var container = {
-	                position: 'absolute',
-	                top: '10%',
-	                left: '2%'
-	            };
-
-	            return _react2.default.createElement(
-	                'div',
-	                { style: container },
-	                _react2.default.createElement(_Title2.default, null),
-	                _react2.default.createElement(_ButtonPanel2.default, null)
-	            );
-	        }
-	    }]);
-
-	    return Container;
-	}(_react.Component);
-
-	exports.default = Container;
+	module.exports = Container;
 
 /***/ },
 /* 173 */
@@ -21511,62 +21497,35 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var React = __webpack_require__(1);
 
 	/**
-	 * 主标题
+	 * 按钮面板
 	 */
-	var Title = function (_Component) {
-	    _inherits(Title, _Component);
+	var Title = React.createClass({
+	    displayName: 'Title',
 
-	    function Title() {
-	        _classCallCheck(this, Title);
 
-	        return _possibleConstructorReturn(this, (Title.__proto__ || Object.getPrototypeOf(Title)).apply(this, arguments));
+	    render: function render() {
+	        //标题和面板的容器，样式主要是进行了定位
+	        var title = {
+	            color: '#f0f0f0',
+	            fontFamily: "幼圆",
+	            fontWeight: 900,
+	            letterSpacing: '6px',
+	            lineHeight: '120px',
+	            fontSize: '120px'
+	        };
+
+	        return React.createElement(
+	            'div',
+	            { style: title },
+	            'BLACK BOX'
+	        );
 	    }
+	});
 
-	    _createClass(Title, [{
-	        key: 'render',
-	        value: function render() {
-
-	            //标题和面板的容器，样式主要是进行了定位
-	            var title = {
-	                color: '#f0f0f0',
-	                fontFamily: "幼圆",
-	                fontWeight: 900,
-	                letterSpacing: '6px',
-	                lineHeight: '120px',
-	                fontSize: '120px'
-	            };
-
-	            return _react2.default.createElement(
-	                'div',
-	                { style: title },
-	                'BLACK BOX'
-	            );
-	        }
-	    }]);
-
-	    return Title;
-	}(_react.Component);
-
-	exports.default = Title;
+	module.exports = Title;
 
 /***/ },
 /* 174 */
@@ -21574,157 +21533,193 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _jquery = __webpack_require__(175);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var React = __webpack_require__(1);
 
 	/**
 	 * 按钮面板
 	 */
-	var ButtonPanel = function (_Component) {
-	    _inherits(ButtonPanel, _Component);
+	var ButtonPanel = React.createClass({
+	    displayName: 'ButtonPanel',
 
-	    function ButtonPanel() {
-	        _classCallCheck(this, ButtonPanel);
 
-	        return _possibleConstructorReturn(this, (ButtonPanel.__proto__ || Object.getPrototypeOf(ButtonPanel)).apply(this, arguments));
+	    handleClick: function handleClick(evt) {
+	        this.props.callbackChangePanel(evt.target.value);
+	    },
+
+	    render: function render() {
+	        var panel = {
+	            transition: 'opacity 0.5s'
+	        };
+
+	        var btn = {
+	            fontFamily: "幼圆",
+	            lineHeight: '24px',
+	            fontSize: '24px',
+	            marginTop: '30px',
+	            marginLeft: '60px'
+	        };
+
+	        return React.createElement(
+	            'div',
+	            { id: 'btn-panel', style: panel },
+	            React.createElement(
+	                'button',
+	                { type: 'button', style: btn, value: 1,
+	                    className: 'btn btn-success btn-lg',
+	                    onClick: this.handleClick },
+	                '获取'
+	            ),
+	            React.createElement(
+	                'button',
+	                { type: 'button', style: btn, value: 2,
+	                    className: 'btn btn-warning btn-lg',
+	                    onClick: this.handleClick },
+	                '分享'
+	            )
+	        );
 	    }
+	});
 
-	    _createClass(ButtonPanel, [{
-	        key: 'showDownloadPanel',
-	        value: function showDownloadPanel() {
-	            (0, _jquery2.default)(".btn").attr("onclick", "javascript:void(0)");
-	            console.log('Hello');
-	            (0, _jquery2.default)("#btn-panel").css("opacity", "0");
-
-	            setTimeout(function () {
-	                (0, _jquery2.default)("#btn-panel").css("display", "none");
-	            }, 600);
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var panel = {
-	                transition: 'opacity 0.5s'
-	            };
-
-	            var btn = {
-	                fontFamily: "幼圆",
-	                lineHeight: '24px',
-	                fontSize: '24px',
-	                marginTop: '30px',
-	                marginLeft: '60px'
-	            };
-
-	            return _react2.default.createElement(
-	                'div',
-	                { id: 'btn-panel', style: panel },
-	                _react2.default.createElement(
-	                    'button',
-	                    { type: 'button', id: 'btn-download', style: btn,
-	                        className: 'btn btn-success btn-lg',
-	                        onClick: this.showDownloadPanel.bind(this) },
-	                    '获取'
-	                ),
-	                _react2.default.createElement(
-	                    'button',
-	                    { type: 'button', style: btn,
-	                        className: 'btn btn-warning btn-lg',
-	                        onClick: this.showDownloadPanel.bind(this) },
-	                    '分享'
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ButtonPanel;
-	}(_react.Component);
-
-	exports.default = ButtonPanel;
+	module.exports = ButtonPanel;
 
 /***/ },
 /* 175 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = jQuery;
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	/**
+	 * 按钮面板
+	 */
+	var FetchPanel = React.createClass({
+	    displayName: 'FetchPanel',
+
+
+	    handleClick: function handleClick(evt) {
+	        this.props.callbackChangePanel(evt.target.value);
+	    },
+
+	    render: function render() {
+
+	        var stylePanel = {
+	            marginTop: '30px',
+	            transition: 'opacity 5s'
+	        };
+
+	        var styleSpan = {
+	            color: 'white',
+	            lineHeight: '24px',
+	            fontSize: '24px'
+	        };
+
+	        var styleInput = {
+	            height: '36px',
+	            width: '90px',
+	            lineHeight: '20px',
+	            fontSize: '20px',
+	            marginLeft: '30px',
+	            borderRadius: '3px',
+	            border: '1px solid',
+	            borderColor: 'white',
+	            boxShadow: '1px 1px 5px #888888'
+	        };
+
+	        var styleBtn = {
+	            fontFamily: "幼圆",
+	            lineHeight: '20px',
+	            fontSize: '20px',
+	            marginLeft: '30px'
+	        };
+
+	        return React.createElement(
+	            'div',
+	            { style: stylePanel },
+	            React.createElement(
+	                'form',
+	                null,
+	                React.createElement(
+	                    'span',
+	                    { style: styleSpan },
+	                    '请输入提取码'
+	                ),
+	                React.createElement('input', { style: styleInput, placeholder: '提取码' }),
+	                React.createElement(
+	                    'button',
+	                    { type: 'button', style: styleBtn,
+	                        className: 'btn btn-warning btn-lg' },
+	                    '获取'
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = FetchPanel;
 
 /***/ },
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var React = __webpack_require__(1);
 
 	/**
-	 * 页脚信息
+	 * 按钮面板
 	 */
-	var Footer = function (_Component) {
-	    _inherits(Footer, _Component);
+	var SharePanel = React.createClass({
+	    displayName: 'SharePanel',
 
-	    function Footer() {
-	        _classCallCheck(this, Footer);
 
-	        return _possibleConstructorReturn(this, (Footer.__proto__ || Object.getPrototypeOf(Footer)).apply(this, arguments));
+	    handleClick: function handleClick(evt) {
+	        this.props.callbackChangePanel(evt.target.value);
+	    },
+
+	    render: function render() {
+	        return React.createElement(
+	            'div',
+	            null,
+	            'Share Panel!!!'
+	        );
 	    }
+	});
 
-	    _createClass(Footer, [{
-	        key: "render",
-	        value: function render() {
+	module.exports = SharePanel;
 
-	            var footer = {
-	                position: "absolute",
-	                bottom: "1%",
-	                left: "2%",
-	                color: "grey"
-	            };
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
 
-	            return _react2.default.createElement(
-	                "div",
-	                { style: footer },
-	                "© 2016 | 济南第二监狱 | 文件分享系统"
-	            );
-	        }
-	    }]);
+	"use strict";
 
-	    return Footer;
-	}(_react.Component);
+	var React = __webpack_require__(1);
 
-	exports.default = Footer;
+	/**
+	 * 按钮面板
+	 */
+	var Footer = React.createClass({
+	    displayName: "Footer",
+
+
+	    render: function render() {
+	        var footer = {
+	            position: "absolute",
+	            bottom: "1%",
+	            left: "2%",
+	            color: "grey"
+	        };
+
+	        return React.createElement(
+	            "div",
+	            { style: footer },
+	            "© 2016 | 济南第二监狱 | 文件分享系统"
+	        );
+	    }
+	});
+
+	module.exports = Footer;
 
 /***/ }
 /******/ ]);

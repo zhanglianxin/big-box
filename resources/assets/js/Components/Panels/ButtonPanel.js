@@ -1,28 +1,21 @@
-import React, {Component} from 'react';
+var React = require('react');
 
-import $ from 'jquery';
 
 /**
  * 按钮面板
  */
-class ButtonPanel extends Component {
+var ButtonPanel = React.createClass({
 
-    showDownloadPanel() {
-        $(".btn").attr("onclick","javascript:void(0)");
-        console.log('Hello');
-        $("#btn-panel").css("opacity", "0");
+    handleClick:function(evt) {
+        this.props.callbackChangePanel(evt.target.value);
+    },
 
-        setTimeout(function () {
-            $("#btn-panel").css("display", "none");
-        }, 600);
-    }
-
-    render() {
-        let panel = {
+    render:function() {
+        var panel = {
             transition: 'opacity 0.5s'
         };
 
-        let btn = {
+        var btn = {
             fontFamily: "幼圆",
             lineHeight: '24px',
             fontSize: '24px',
@@ -32,20 +25,20 @@ class ButtonPanel extends Component {
 
         return (
             <div id="btn-panel" style={panel}>
-                <button type="button" id="btn-download" style={btn}
+                <button type="button" style={btn} value={1}
                         className="btn btn-success btn-lg"
-                        onClick={this.showDownloadPanel.bind(this)}>
+                        onClick={this.handleClick}>
                     获取
                 </button>
 
-                <button type="button" style={btn}
+                <button type="button" style={btn} value={2}
                         className="btn btn-warning btn-lg"
-                        onClick={this.showDownloadPanel.bind(this)}>
+                        onClick={this.handleClick}>
                     分享
                 </button>
             </div>
         );
     }
-}
+});
 
-export default ButtonPanel;
+module.exports = ButtonPanel;

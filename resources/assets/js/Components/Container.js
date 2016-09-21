@@ -1,7 +1,9 @@
-import React, {Component} from 'react';
+var React = require('react');
 
-import Title from './Title';
-import ButtonPanel from './Panels/ButtonPanel';
+var Title = require('./Title');
+var ButtonPanel = require('./Panels/ButtonPanel');
+var FetchPanel = require('./Panels/FetchPanel');
+var SharePanel = require('./Panels/SharePanel');
 
 
 /**
@@ -10,24 +12,43 @@ import ButtonPanel from './Panels/ButtonPanel';
  * 获取面板：有一个提取码的输入框
  * 分享面板：还没有具体设计
  */
-class Container extends Component {
 
+var Container = React.createClass({
 
-    render() {
+    getInitialState: function() {
+        return { panel:0 };
+    },
+
+    changePanel: function(num){
+        this.setState({panel:num});
+    },
+
+    render:function() {
         //标题和面板的容器，样式主要是进行了定位
-        let container = {
+        var container = {
             position: 'absolute',
             top: '10%',
             left: '2%'
         };
 
+        var p;
+        if(this.state.panel==0) 
+            p = (<ButtonPanel 
+                callbackChangePanel={this.changePanel} />);
+        else if(this.state.panel==1) 
+            p = (<FetchPanel 
+                callbackChangePanel={this.changePanel} />);
+        else  
+            p = (<SharePanel 
+                callbackChangePanel={this.changePanel} />);
+
         return (
             <div style={container}>
                 <Title />
-                <ButtonPanel/>
+                {p}
             </div>
         );
     }
-}
+});
 
-export default Container;
+module.exports = Container;

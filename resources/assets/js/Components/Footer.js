@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+var React = require('react');
+
 
 /**
- * 页脚信息
+ * 按钮面板
  */
-class Footer extends Component {
+var Footer = React.createClass({
 
-    render() {
-
+    render:function() {
         let footer = {
             position: "absolute",
             bottom: "1%",
@@ -20,6 +20,6 @@ class Footer extends Component {
             </div>
         );
     }
-}
+});
 
-export default Footer;
+module.exports = Footer;
