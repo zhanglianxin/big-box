@@ -12,7 +12,7 @@ var ButtonPanel = React.createClass({
 
     render:function() {
         var panel = {
-            transition: 'opacity 0.5s'
+            //transition: 'opacity 0.5s'
         };
 
         var btn = {

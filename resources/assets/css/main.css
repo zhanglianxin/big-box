@@ -15,3 +15,57 @@ body {
     background-repeat: no-repeat;
     background-size:100% 100%;
 }
+
+
+.example-appear {
+    transform: translateX(-600px);
+}
+
+.example-appear.example-appear-active {
+    transform: translateX(0px);
+    transition: transform 0.5s ease-in;
+
+}
+
+.example-enter {
+    transform: translateX(-600px);
+}
+
+.example-enter.example-enter-active {
+    transform: translateX(0px);
+    transition: transform 0.5s ease-in;
+
+}
+
+.example-leave {
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+.example-leave.example-leave-active {
+    opacity: 0;
+    transform: translateX(-600px);
+    transition: opacity 0.5s ease-out,transform 0.5s ease-in;
+
+}
+
+
+
+
+
+.slidein {
+    animation-duration: 3s;
+    animation-name: slidein;
+}
+
+@keyframes slidein {
+    from {
+        margin-left: 100%;
+        width: 300%;
+    }
+
+    to {
+        margin-left: 0%;
+        width: 100%;
+    }
+}

@@ -1,6 +1,8 @@
 var React = require('react');
 
-var Title = require('./Title');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+
+
 var ButtonPanel = require('./Panels/ButtonPanel');
 var FetchPanel = require('./Panels/FetchPanel');
 var SharePanel = require('./Panels/SharePanel');
@@ -15,37 +17,42 @@ var SharePanel = require('./Panels/SharePanel');
 
 var Container = React.createClass({
 
-    getInitialState: function() {
-        return { panel:0 };
+    getInitialState: function () {
+        return {panel: 0};
     },
 
-    changePanel: function(num){
-        this.setState({panel:num});
+    changePanel: function (num) {
+        this.setState({panel: num});
     },
 
-    render:function() {
+    render: function () {
         //标题和面板的容器，样式主要是进行了定位
         var container = {
             position: 'absolute',
-            top: '10%',
-            left: '2%'
+            top: '30%',
+            left: '50px'
         };
 
         var p;
-        if(this.state.panel==0) 
-            p = (<ButtonPanel 
-                callbackChangePanel={this.changePanel} />);
-        else if(this.state.panel==1) 
-            p = (<FetchPanel 
-                callbackChangePanel={this.changePanel} />);
-        else  
-            p = (<SharePanel 
-                callbackChangePanel={this.changePanel} />);
+        if (this.state.panel == 0)
+            p = (<ButtonPanel key={0}
+                callbackChangePanel={this.changePanel}/>);
+        else if (this.state.panel == 1)
+            p = (<FetchPanel key={1}
+                callbackChangePanel={this.changePanel}/>);
+        else
+            p = (<SharePanel key={2}
+                callbackChangePanel={this.changePanel}/>);
 
         return (
             <div style={container}>
-                <Title />
-                {p}
+                <ReactCSSTransitionGroup transitionName="example"
+                                         transitionEnterTimeout={500}
+                                         transitionAppear={true}
+                                         transitionAppearTimeout={500}
+                                         transitionLeaveTimeout={500}>
+                    {p}
+                </ReactCSSTransitionGroup>
             </div>
         );
     }

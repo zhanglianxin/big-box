@@ -45,21 +45,21 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(178);
+	module.exports = __webpack_require__(184);
 
 
 /***/ },
 
-/***/ 178:
+/***/ 184:
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(179);
+	var content = __webpack_require__(185);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(181)(content, {});
+	var update = __webpack_require__(187)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -77,22 +77,22 @@
 
 /***/ },
 
-/***/ 179:
+/***/ 185:
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(180)();
+	exports = module.exports = __webpack_require__(186)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "html {\r\n    height:100%;\r\n}\r\n\r\n/* 页面背景为一张图片，长宽 100% 充满，并且有一定的透明度 */\r\nbody {\r\n    margin: 0;\r\n    padding: 0;\r\n    height:100%;\r\n    background:linear-gradient(45deg,\r\n            rgba(255,255,255,0),\r\n            rgba(255,255,255,0.4) 70%,\r\n            rgba(255,255,255,1)),\r\n            url(\"/images/girl.jpg\");\r\n    background-repeat: no-repeat;\r\n    background-size:100% 100%;\r\n}", ""]);
+	exports.push([module.id, "html {\r\n    height:100%;\r\n}\r\n\r\n/* 页面背景为一张图片，长宽 100% 充满，并且有一定的透明度 */\r\nbody {\r\n    margin: 0;\r\n    padding: 0;\r\n    height:100%;\r\n    background:linear-gradient(45deg,\r\n            rgba(255,255,255,0),\r\n            rgba(255,255,255,0.4) 70%,\r\n            rgba(255,255,255,1)),\r\n            url(\"/images/girl.jpg\");\r\n    background-repeat: no-repeat;\r\n    background-size:100% 100%;\r\n}\r\n\r\n\r\n.example-appear {\r\n    transform: translateX(-600px);\r\n}\r\n\r\n.example-appear.example-appear-active {\r\n    transform: translateX(0px);\r\n    transition: transform 0.5s ease-in;\r\n\r\n}\r\n\r\n.example-enter {\r\n    transform: translateX(-600px);\r\n}\r\n\r\n.example-enter.example-enter-active {\r\n    transform: translateX(0px);\r\n    transition: transform 0.5s ease-in;\r\n\r\n}\r\n\r\n.example-leave {\r\n    opacity: 1;\r\n    transform: translateX(0px);\r\n}\r\n\r\n.example-leave.example-leave-active {\r\n    opacity: 0;\r\n    transform: translateX(-600px);\r\n    transition: opacity 0.5s ease-out,transform 0.5s ease-in;\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n.slidein {\r\n    animation-duration: 3s;\r\n    animation-name: slidein;\r\n}\r\n\r\n@keyframes slidein {\r\n    from {\r\n        margin-left: 100%;\r\n        width: 300%;\r\n    }\r\n\r\n    to {\r\n        margin-left: 0%;\r\n        width: 100%;\r\n    }\r\n}", ""]);
 
 	// exports
 
 
 /***/ },
 
-/***/ 180:
+/***/ 186:
 /***/ function(module, exports) {
 
 	/*
@@ -149,7 +149,7 @@
 
 /***/ },
 
-/***/ 181:
+/***/ 187:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
