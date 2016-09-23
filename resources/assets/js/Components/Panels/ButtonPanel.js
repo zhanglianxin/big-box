@@ -1,19 +1,25 @@
 var React = require('react');
-
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 /**
  * 按钮面板
  */
 var ButtonPanel = React.createClass({
 
-    handleClick:function(evt) {
-        this.props.callbackChangePanel(evt.target.value);
+    getInitialState: function () {
+        return {show:true};
     },
 
-    render:function() {
-        var panel = {
-            //transition: 'opacity 0.5s'
-        };
+    handleClick: function (evt) {
+        this.setState({show:false});
+        var that=this;
+        var val = evt.target.value
+        window.setTimeout(function(){
+            that.props.callbackChangePanel(val);
+        },500);
+    },
+
+    render: function () {
 
         var btn = {
             fontFamily: "幼圆",
@@ -23,8 +29,9 @@ var ButtonPanel = React.createClass({
             marginLeft: '60px'
         };
 
-        return (
-            <div id="btn-panel" style={panel}>
+        var temp;
+        if(this.state.show)
+            temp = (<div key={1}>
                 <button type="button" style={btn} value={1}
                         className="btn btn-success btn-lg"
                         onClick={this.handleClick}>
@@ -36,7 +43,18 @@ var ButtonPanel = React.createClass({
                         onClick={this.handleClick}>
                     分享
                 </button>
-            </div>
+            </div>);
+        else
+            temp=(<div key={2}></div>);
+
+        return (
+            <ReactCSSTransitionGroup transitionName="example"
+                                     transitionEnterTimeout={5000}
+                                     transitionLeaveTimeout={5000}
+                                     transitionAppear={true}
+                                     transitionAppearTimeout={1000}>
+                {temp}
+            </ReactCSSTransitionGroup>
         );
     }
 });

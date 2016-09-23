@@ -21442,9 +21442,7 @@
 
 	var React = __webpack_require__(1);
 
-	var ReactCSSTransitionGroup = __webpack_require__(173);
-
-	var ButtonPanel = __webpack_require__(180);
+	var ButtonPanel = __webpack_require__(173);
 	var FetchPanel = __webpack_require__(181);
 	var SharePanel = __webpack_require__(182);
 
@@ -21484,15 +21482,7 @@
 	        return React.createElement(
 	            'div',
 	            { style: container },
-	            React.createElement(
-	                ReactCSSTransitionGroup,
-	                { transitionName: 'example',
-	                    transitionEnterTimeout: 500,
-	                    transitionAppear: true,
-	                    transitionAppearTimeout: 500,
-	                    transitionLeaveTimeout: 500 },
-	                p
-	            )
+	            p
 	        );
 	    }
 	});
@@ -21503,10 +21493,83 @@
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(174);
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var ReactCSSTransitionGroup = __webpack_require__(174);
+
+	/**
+	 * 按钮面板
+	 */
+	var ButtonPanel = React.createClass({
+	    displayName: 'ButtonPanel',
+
+
+	    getInitialState: function getInitialState() {
+	        return { show: true };
+	    },
+
+	    handleClick: function handleClick(evt) {
+	        this.setState({ show: false });
+	        var that = this;
+	        var val = evt.target.value;
+	        window.setTimeout(function () {
+	            that.props.callbackChangePanel(val);
+	        }, 500);
+	    },
+
+	    render: function render() {
+
+	        var btn = {
+	            fontFamily: "幼圆",
+	            lineHeight: '24px',
+	            fontSize: '24px',
+	            marginTop: '30px',
+	            marginLeft: '60px'
+	        };
+
+	        var temp;
+	        if (this.state.show) temp = React.createElement(
+	            'div',
+	            { key: 1 },
+	            React.createElement(
+	                'button',
+	                { type: 'button', style: btn, value: 1,
+	                    className: 'btn btn-success btn-lg',
+	                    onClick: this.handleClick },
+	                '获取'
+	            ),
+	            React.createElement(
+	                'button',
+	                { type: 'button', style: btn, value: 2,
+	                    className: 'btn btn-warning btn-lg',
+	                    onClick: this.handleClick },
+	                '分享'
+	            )
+	        );else temp = React.createElement('div', { key: 2 });
+
+	        return React.createElement(
+	            ReactCSSTransitionGroup,
+	            { transitionName: 'example',
+	                transitionEnterTimeout: 5000,
+	                transitionLeaveTimeout: 5000,
+	                transitionAppear: true,
+	                transitionAppearTimeout: 1000 },
+	            temp
+	        );
+	    }
+	});
+
+	module.exports = ButtonPanel;
 
 /***/ },
 /* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(175);
+
+/***/ },
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21526,8 +21589,8 @@
 
 	var React = __webpack_require__(2);
 
-	var ReactTransitionGroup = __webpack_require__(175);
-	var ReactCSSTransitionGroupChild = __webpack_require__(177);
+	var ReactTransitionGroup = __webpack_require__(176);
+	var ReactCSSTransitionGroupChild = __webpack_require__(178);
 
 	function createTransitionTimeoutPropValidator(transitionType) {
 	  var timeoutPropName = 'transition' + transitionType + 'Timeout';
@@ -21598,7 +21661,7 @@
 	module.exports = ReactCSSTransitionGroup;
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -21618,7 +21681,7 @@
 
 	var React = __webpack_require__(2);
 	var ReactInstanceMap = __webpack_require__(119);
-	var ReactTransitionChildMapping = __webpack_require__(176);
+	var ReactTransitionChildMapping = __webpack_require__(177);
 
 	var emptyFunction = __webpack_require__(12);
 
@@ -21850,7 +21913,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -21959,7 +22022,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21978,8 +22041,8 @@
 	var React = __webpack_require__(2);
 	var ReactDOM = __webpack_require__(35);
 
-	var CSSCore = __webpack_require__(178);
-	var ReactTransitionEvents = __webpack_require__(179);
+	var CSSCore = __webpack_require__(179);
+	var ReactTransitionEvents = __webpack_require__(180);
 
 	var onlyChild = __webpack_require__(33);
 
@@ -22131,7 +22194,7 @@
 	module.exports = ReactCSSTransitionGroupChild;
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -22258,7 +22321,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22334,61 +22397,6 @@
 	};
 
 	module.exports = ReactTransitionEvents;
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	/**
-	 * 按钮面板
-	 */
-	var ButtonPanel = React.createClass({
-	    displayName: 'ButtonPanel',
-
-
-	    handleClick: function handleClick(evt) {
-	        this.props.callbackChangePanel(evt.target.value);
-	    },
-
-	    render: function render() {
-	        var panel = {
-	            //transition: 'opacity 0.5s'
-	        };
-
-	        var btn = {
-	            fontFamily: "幼圆",
-	            lineHeight: '24px',
-	            fontSize: '24px',
-	            marginTop: '30px',
-	            marginLeft: '60px'
-	        };
-
-	        return React.createElement(
-	            'div',
-	            { id: 'btn-panel', style: panel },
-	            React.createElement(
-	                'button',
-	                { type: 'button', style: btn, value: 1,
-	                    className: 'btn btn-success btn-lg',
-	                    onClick: this.handleClick },
-	                '获取'
-	            ),
-	            React.createElement(
-	                'button',
-	                { type: 'button', style: btn, value: 2,
-	                    className: 'btn btn-warning btn-lg',
-	                    onClick: this.handleClick },
-	                '分享'
-	            )
-	        );
-	    }
-	});
-
-	module.exports = ButtonPanel;
 
 /***/ },
 /* 181 */

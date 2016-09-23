@@ -1,6 +1,6 @@
 var React = require('react');
 
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+
 
 
 var ButtonPanel = require('./Panels/ButtonPanel');
@@ -46,13 +46,9 @@ var Container = React.createClass({
 
         return (
             <div style={container}>
-                <ReactCSSTransitionGroup transitionName="example"
-                                         transitionEnterTimeout={500}
-                                         transitionAppear={true}
-                                         transitionAppearTimeout={500}
-                                         transitionLeaveTimeout={500}>
+
                     {p}
-                </ReactCSSTransitionGroup>
+
             </div>
         );
     }

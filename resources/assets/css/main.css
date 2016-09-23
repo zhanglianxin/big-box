@@ -18,23 +18,25 @@ body {
 
 
 .example-appear {
+    opacity: 0;
     transform: translateX(-600px);
 }
 
 .example-appear.example-appear-active {
+    opacity: 1;
     transform: translateX(0px);
-    transition: transform 0.5s ease-in;
-
+    transition: opacity 1s ease-in,transform 0.5s ease-in;
 }
 
 .example-enter {
+    opacity: 0;
     transform: translateX(-600px);
 }
 
 .example-enter.example-enter-active {
+    opacity: 1;
     transform: translateX(0px);
-    transition: transform 0.5s ease-in;
-
+    transition: opacity 1s ease-in,transform 0.5s ease-in;
 }
 
 .example-leave {
@@ -43,9 +45,9 @@ body {
 }
 
 .example-leave.example-leave-active {
-    opacity: 0;
+    opacity: 1;
     transform: translateX(-600px);
-    transition: opacity 0.5s ease-out,transform 0.5s ease-in;
+    transition: opacity 1s ease-out,transform 0.5s ease-out;
 
 }
 
