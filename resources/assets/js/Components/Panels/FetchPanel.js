@@ -1,56 +1,45 @@
 var React = require('react');
-
+import SixInput from './SixInput'
 
 /**
- * 按钮面板
+ * 获取面板
  */
 var FetchPanel = React.createClass({
 
-    handleClick:function(evt) {
+    handleClick: function (evt) {
         this.props.callbackChangePanel(evt.target.value);
     },
 
-    render:function() {
-
-        var stylePanel = {
-            marginTop:'30px',
-            transition:'opacity 5s'
-        };
+    render: function () {
 
         var styleSpan = {
-            color:'white',
-            lineHeight: '24px',
-            fontSize: '24px'
+            color: 'white',
+            height: '30px',
+            lineHeight: '30px',
+            fontSize: '24px',
+            marginRight: '20px',
+            display: 'inline-block',
+            verticalAlign: 'middle'
         };
 
-        var styleInput = {
-            height: '36px',
-            width: '90px',
-            lineHeight: '20px',
-            fontSize: '20px',
-            marginLeft: '30px',
-            borderRadius:'3px',
-            border:'1px solid',
-            borderColor: 'white',
-            boxShadow: '1px 1px 5px #888888'
-        };
 
         var styleBtn = {
             fontFamily: "幼圆",
             lineHeight: '20px',
             fontSize: '20px',
-            marginLeft: '30px'
+            marginLeft: '20px',
+            verticalAlign: 'middle'
         };
 
 
         return (
-            <div style={stylePanel}>
+            <div>
                 <form >
                     <span style={styleSpan}>请输入提取码</span>
-                    <input style={styleInput}  placeholder="提取码" />
 
-                    <button type="button" style={styleBtn} 
-                        className="btn btn-warning btn-lg">
+                    <SixInput />
+
+                    <button type="button" style={styleBtn} className="btn btn-warning btn-lg">
                         获取
                     </button>
                 </form>

@@ -58,7 +58,7 @@
 
 	var _Container2 = _interopRequireDefault(_Container);
 
-	var _Footer = __webpack_require__(183);
+	var _Footer = __webpack_require__(186);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -21440,11 +21440,18 @@
 
 	'use strict';
 
-	var React = __webpack_require__(1);
+	var _Constants = __webpack_require__(173);
 
-	var ButtonPanel = __webpack_require__(173);
-	var FetchPanel = __webpack_require__(181);
-	var SharePanel = __webpack_require__(182);
+	var _Constants2 = _interopRequireDefault(_Constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var React = __webpack_require__(1);
+	var ReactCSSTransitionGroup = __webpack_require__(174);
+
+	var ButtonPanel = __webpack_require__(181);
+	var FetchPanel = __webpack_require__(182);
+	var SharePanel = __webpack_require__(185);
 
 	/**
 	 * 住显示区的容器，由标题和面板组成，面板是可变的，有三种面板
@@ -21458,31 +21465,41 @@
 
 
 	    getInitialState: function getInitialState() {
-	        return { panel: 0 };
+	        return { panel: _Constants2.default.MAIN };
 	    },
 
 	    changePanel: function changePanel(num) {
-	        this.setState({ panel: num });
+	        var _this = this;
+
+	        this.setState({ panel: _Constants2.default.NONE });
+	        setTimeout(function () {
+	            return _this.setState({ panel: num });
+	        }, 500);
 	    },
 
 	    render: function render() {
 	        //标题和面板的容器，样式主要是进行了定位
 	        var container = {
 	            position: 'absolute',
-	            top: '30%',
+	            top: '35%',
 	            left: '50px'
 	        };
 
 	        var p;
-	        if (this.state.panel == 0) p = React.createElement(ButtonPanel, { key: 0,
-	            callbackChangePanel: this.changePanel });else if (this.state.panel == 1) p = React.createElement(FetchPanel, { key: 1,
-	            callbackChangePanel: this.changePanel });else p = React.createElement(SharePanel, { key: 2,
-	            callbackChangePanel: this.changePanel });
+	        if (this.state.panel == _Constants2.default.NONE) p = React.createElement('div', { key: 0, style: { display: 'none' } });else if (this.state.panel == _Constants2.default.MAIN) p = React.createElement(ButtonPanel, { key: _Constants2.default.MAIN, callbackChangePanel: this.changePanel });else if (this.state.panel == _Constants2.default.FETCH) p = React.createElement(FetchPanel, { key: _Constants2.default.FETCH, callbackChangePanel: this.changePanel });else p = React.createElement(SharePanel, { key: _Constants2.default.SHARE, callbackChangePanel: this.changePanel });
 
 	        return React.createElement(
 	            'div',
 	            { style: container },
-	            p
+	            React.createElement(
+	                ReactCSSTransitionGroup,
+	                { transitionName: 'example',
+	                    transitionEnterTimeout: 500,
+	                    transitionLeaveTimeout: 500,
+	                    transitionAppear: true,
+	                    transitionAppearTimeout: 500 },
+	                p
+	            )
 	        );
 	    }
 	});
@@ -21491,76 +21508,19 @@
 
 /***/ },
 /* 173 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
-	var React = __webpack_require__(1);
-	var ReactCSSTransitionGroup = __webpack_require__(174);
-
-	/**
-	 * 按钮面板
-	 */
-	var ButtonPanel = React.createClass({
-	    displayName: 'ButtonPanel',
-
-
-	    getInitialState: function getInitialState() {
-	        return { show: true };
-	    },
-
-	    handleClick: function handleClick(evt) {
-	        this.setState({ show: false });
-	        var that = this;
-	        var val = evt.target.value;
-	        window.setTimeout(function () {
-	            that.props.callbackChangePanel(val);
-	        }, 500);
-	    },
-
-	    render: function render() {
-
-	        var btn = {
-	            fontFamily: "幼圆",
-	            lineHeight: '24px',
-	            fontSize: '24px',
-	            marginTop: '30px',
-	            marginLeft: '60px'
-	        };
-
-	        var temp;
-	        if (this.state.show) temp = React.createElement(
-	            'div',
-	            { key: 1 },
-	            React.createElement(
-	                'button',
-	                { type: 'button', style: btn, value: 1,
-	                    className: 'btn btn-success btn-lg',
-	                    onClick: this.handleClick },
-	                '获取'
-	            ),
-	            React.createElement(
-	                'button',
-	                { type: 'button', style: btn, value: 2,
-	                    className: 'btn btn-warning btn-lg',
-	                    onClick: this.handleClick },
-	                '分享'
-	            )
-	        );else temp = React.createElement('div', { key: 2 });
-
-	        return React.createElement(
-	            ReactCSSTransitionGroup,
-	            { transitionName: 'example',
-	                transitionEnterTimeout: 5000,
-	                transitionLeaveTimeout: 5000,
-	                transitionAppear: true,
-	                transitionAppearTimeout: 1000 },
-	            temp
-	        );
-	    }
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
 	});
-
-	module.exports = ButtonPanel;
+	exports.default = {
+	    NONE: 0,
+	    MAIN: 1,
+	    FETCH: 2,
+	    SHARE: 3
+	};
 
 /***/ },
 /* 174 */
@@ -22404,10 +22364,77 @@
 
 	'use strict';
 
+	var _Constants = __webpack_require__(173);
+
+	var _Constants2 = _interopRequireDefault(_Constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var React = __webpack_require__(1);
+
 
 	/**
 	 * 按钮面板
+	 */
+	var ButtonPanel = React.createClass({
+	    displayName: 'ButtonPanel',
+
+
+	    onFetchBtnClick: function onFetchBtnClick(evt) {
+	        this.props.callbackChangePanel(_Constants2.default.FETCH);
+	    },
+
+	    onShareBtnClick: function onShareBtnClick(evt) {
+	        this.props.callbackChangePanel(_Constants2.default.SHARE);
+	    },
+
+	    render: function render() {
+
+	        var btn = {
+	            fontFamily: "幼圆",
+	            lineHeight: '24px',
+	            fontSize: '24px',
+	            marginLeft: '60px'
+	        };
+
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	                'button',
+	                { type: 'button', style: btn,
+	                    className: 'btn btn-success btn-lg', onClick: this.onFetchBtnClick },
+	                '获取'
+	            ),
+	            React.createElement(
+	                'button',
+	                { type: 'button', style: btn,
+	                    className: 'btn btn-warning btn-lg', onClick: this.onShareBtnClick },
+	                '分享'
+	            )
+	        );
+	    }
+	});
+
+	module.exports = ButtonPanel;
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _SixInput = __webpack_require__(183);
+
+	var _SixInput2 = _interopRequireDefault(_SixInput);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var React = __webpack_require__(1);
+
+
+	/**
+	 * 获取面板
 	 */
 	var FetchPanel = React.createClass({
 	    displayName: 'FetchPanel',
@@ -22419,39 +22446,27 @@
 
 	    render: function render() {
 
-	        var stylePanel = {
-	            marginTop: '30px',
-	            transition: 'opacity 5s'
-	        };
-
 	        var styleSpan = {
 	            color: 'white',
-	            lineHeight: '24px',
-	            fontSize: '24px'
-	        };
-
-	        var styleInput = {
-	            height: '36px',
-	            width: '90px',
-	            lineHeight: '20px',
-	            fontSize: '20px',
-	            marginLeft: '30px',
-	            borderRadius: '3px',
-	            border: '1px solid',
-	            borderColor: 'white',
-	            boxShadow: '1px 1px 5px #888888'
+	            height: '30px',
+	            lineHeight: '30px',
+	            fontSize: '24px',
+	            marginRight: '20px',
+	            display: 'inline-block',
+	            verticalAlign: 'middle'
 	        };
 
 	        var styleBtn = {
 	            fontFamily: "幼圆",
 	            lineHeight: '20px',
 	            fontSize: '20px',
-	            marginLeft: '30px'
+	            marginLeft: '20px',
+	            verticalAlign: 'middle'
 	        };
 
 	        return React.createElement(
 	            'div',
-	            { style: stylePanel },
+	            null,
 	            React.createElement(
 	                'form',
 	                null,
@@ -22460,11 +22475,10 @@
 	                    { style: styleSpan },
 	                    '请输入提取码'
 	                ),
-	                React.createElement('input', { style: styleInput, placeholder: '提取码' }),
+	                React.createElement(_SixInput2.default, null),
 	                React.createElement(
 	                    'button',
-	                    { type: 'button', style: styleBtn,
-	                        className: 'btn btn-warning btn-lg' },
+	                    { type: 'button', style: styleBtn, className: 'btn btn-warning btn-lg' },
 	                    '获取'
 	                )
 	            )
@@ -22475,7 +22489,125 @@
 	module.exports = FetchPanel;
 
 /***/ },
-/* 182 */
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _Input = __webpack_require__(184);
+
+	var _Input2 = _interopRequireDefault(_Input);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var React = __webpack_require__(1);
+
+
+	/**
+	 * 获取面板
+	 */
+	var SixInput = React.createClass({
+	    displayName: 'SixInput',
+
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            numbers: [0, 1, 2, 3, "", ""],
+	            current: 0
+	        };
+	    },
+
+	    changeCurrent: function changeCurrent(curr) {
+	        this.setState({
+	            numbers: this.state.numbers,
+	            current: curr
+	        });
+	    },
+
+	    render: function render() {
+	        var _this = this;
+
+	        var temp = this.state.numbers.map(function (value, index, array) {
+	            return React.createElement(_Input2.default, { key: index,
+	                number: value,
+	                index: index,
+	                focus: index == _this.state.current,
+	                callbackChangeCurrent: _this.changeCurrent
+
+	            });
+	        });
+
+	        return React.createElement(
+	            'span',
+	            null,
+	            temp
+	        );
+	    }
+	});
+
+	module.exports = SixInput;
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Input = React.createClass({
+	    displayName: 'Input',
+
+
+	    onFocus: function onFocus(evt) {
+	        evt.target.select();
+	    },
+
+	    onClick: function onClick(evt) {
+	        evt.stopPropagation();
+	        this.props.callbackChangeCurrent(this.props.index);
+	    },
+
+	    render: function render() {
+
+	        var styleInput = {
+	            height: '36px',
+	            width: '28px',
+	            lineHeight: '20px',
+	            fontSize: '20px',
+	            marginRight: '3px',
+	            borderRadius: '3px',
+	            border: '1px solid',
+	            borderColor: 'orange',
+	            textAlign: 'center',
+	            verticalAlign: 'middle'
+	        };
+
+	        var temp;
+	        if (this.props.focus) {
+	            console.log('aaa');
+	            temp = React.createElement('input', { type: 'text', style: styleInput,
+	                maxLength: '1', value: this.props.number,
+	                autoFocus: 'false', onFocus: this.onFocus,
+	                onClick: this.onClick });
+	        } else {
+	            temp = React.createElement('input', { type: 'text', style: styleInput,
+	                maxLength: '1', value: this.props.number,
+	                onFocus: this.onFocus, onClick: this.onClick });
+	        }
+
+	        return React.createElement(
+	            'span',
+	            null,
+	            temp
+	        );
+	    }
+	});
+
+	module.exports = Input;
+
+/***/ },
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22505,7 +22637,7 @@
 	module.exports = SharePanel;
 
 /***/ },
-/* 183 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

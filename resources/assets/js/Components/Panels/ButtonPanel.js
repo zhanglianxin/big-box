@@ -1,22 +1,17 @@
 var React = require('react');
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+import Panels from './Constants';
 
 /**
  * 按钮面板
  */
 var ButtonPanel = React.createClass({
 
-    getInitialState: function () {
-        return {show:true};
+    onFetchBtnClick: function (evt) {
+        this.props.callbackChangePanel(Panels.FETCH);
     },
 
-    handleClick: function (evt) {
-        this.setState({show:false});
-        var that=this;
-        var val = evt.target.value
-        window.setTimeout(function(){
-            that.props.callbackChangePanel(val);
-        },500);
+    onShareBtnClick: function (evt) {
+        this.props.callbackChangePanel(Panels.SHARE);
     },
 
     render: function () {
@@ -25,36 +20,21 @@ var ButtonPanel = React.createClass({
             fontFamily: "幼圆",
             lineHeight: '24px',
             fontSize: '24px',
-            marginTop: '30px',
             marginLeft: '60px'
         };
 
-        var temp;
-        if(this.state.show)
-            temp = (<div key={1}>
-                <button type="button" style={btn} value={1}
-                        className="btn btn-success btn-lg"
-                        onClick={this.handleClick}>
+        return (
+            <div>
+                <button type="button" style={btn}
+                        className="btn btn-success btn-lg" onClick={this.onFetchBtnClick}>
                     获取
                 </button>
 
-                <button type="button" style={btn} value={2}
-                        className="btn btn-warning btn-lg"
-                        onClick={this.handleClick}>
+                <button type="button" style={btn}
+                        className="btn btn-warning btn-lg" onClick={this.onShareBtnClick}>
                     分享
                 </button>
-            </div>);
-        else
-            temp=(<div key={2}></div>);
-
-        return (
-            <ReactCSSTransitionGroup transitionName="example"
-                                     transitionEnterTimeout={5000}
-                                     transitionLeaveTimeout={5000}
-                                     transitionAppear={true}
-                                     transitionAppearTimeout={1000}>
-                {temp}
-            </ReactCSSTransitionGroup>
+            </div>
         );
     }
 });
