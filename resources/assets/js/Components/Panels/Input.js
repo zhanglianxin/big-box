@@ -8,9 +8,14 @@ var Input = React.createClass({
         evt.target.select();
     },
 
+
     onClick: function(evt){
-        evt.stopPropagation();
-        this.props.callbackChangeCurrent(this.props.index);
+        evt.proventDefault();
+        //this.props.callbackChangeCurrent(this.props.index);
+    },
+
+    onMouseUp: function(evt){
+        evt.proventDefault();
     },
 
     render: function () {
@@ -33,13 +38,13 @@ var Input = React.createClass({
             console.log('aaa');
             temp = <input type="text" style={styleInput}
                           maxLength="1" value={this.props.number}
-                          autoFocus="false" onFocus={this.onFocus}
-                        onClick={this.onClick}/>;
+                          autoFocus onFocus={this.onFocus} onMouseUp={this.onMouseUp} onMouseDown={this.onClick}
+                       />;
         }
         else {
             temp = <input type="text" style={styleInput}
-                          maxLength="1" value={this.props.number}
-                          onFocus={this.onFocus} onClick={this.onClick}/>;
+                          maxLength="1" value={this.props.number} onMouseDown={this.onClick}
+                          onFocus={this.onFocus} onMouseUp={this.onMouseUp}/>;
         }
 
         return (

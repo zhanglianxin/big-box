@@ -22513,7 +22513,7 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            numbers: [0, 1, 2, 3, "", ""],
-	            current: 0
+	            current: 2
 	        };
 	    },
 
@@ -22564,8 +22564,12 @@
 	    },
 
 	    onClick: function onClick(evt) {
-	        evt.stopPropagation();
-	        this.props.callbackChangeCurrent(this.props.index);
+	        evt.proventDefault();
+	        //this.props.callbackChangeCurrent(this.props.index);
+	    },
+
+	    onMouseUp: function onMouseUp(evt) {
+	        evt.proventDefault();
 	    },
 
 	    render: function render() {
@@ -22588,12 +22592,12 @@
 	            console.log('aaa');
 	            temp = React.createElement('input', { type: 'text', style: styleInput,
 	                maxLength: '1', value: this.props.number,
-	                autoFocus: 'false', onFocus: this.onFocus,
-	                onClick: this.onClick });
+	                autoFocus: true, onFocus: this.onFocus, onMouseUp: this.onMouseUp, onMouseDown: this.onClick
+	            });
 	        } else {
 	            temp = React.createElement('input', { type: 'text', style: styleInput,
-	                maxLength: '1', value: this.props.number,
-	                onFocus: this.onFocus, onClick: this.onClick });
+	                maxLength: '1', value: this.props.number, onMouseDown: this.onClick,
+	                onFocus: this.onFocus, onMouseUp: this.onMouseUp });
 	        }
 
 	        return React.createElement(
