@@ -21477,6 +21477,15 @@
 	        }, 500);
 	    },
 
+	    showUpload: function showUpload(fd) {
+	        var _this2 = this;
+
+	        this.setState({ panel: _Constants2.default.NONE });
+	        setTimeout(function () {
+	            return _this2.setState({ panel: _Constants2.default.SHARE, formdata: fd });
+	        }, 500);
+	    },
+
 	    render: function render() {
 	        //标题和面板的容器，样式主要是进行了定位
 	        var container = {
@@ -21486,7 +21495,12 @@
 	        };
 
 	        var p;
-	        if (this.state.panel == _Constants2.default.NONE) p = React.createElement('div', { key: 0, style: { display: 'none' } });else if (this.state.panel == _Constants2.default.MAIN) p = React.createElement(ButtonPanel, { key: _Constants2.default.MAIN, callbackChangePanel: this.changePanel });else if (this.state.panel == _Constants2.default.FETCH) p = React.createElement(FetchPanel, { key: _Constants2.default.FETCH, callbackChangePanel: this.changePanel });else p = React.createElement(SharePanel, { key: _Constants2.default.SHARE, callbackChangePanel: this.changePanel });
+	        if (this.state.panel == _Constants2.default.NONE) p = React.createElement('div', { key: 0, style: { display: 'none' } });else if (this.state.panel == _Constants2.default.MAIN) p = React.createElement(ButtonPanel, { key: _Constants2.default.MAIN,
+	            callbackChangePanel: this.changePanel,
+	            callbackShowUpload: this.showUpload });else if (this.state.panel == _Constants2.default.FETCH) p = React.createElement(FetchPanel, { key: _Constants2.default.FETCH,
+	            callbackChangePanel: this.changePanel });else p = React.createElement(SharePanel, { key: _Constants2.default.SHARE,
+	            callbackChangePanel: this.changePanel,
+	            formdata: this.state.formdata });
 
 	        return React.createElement(
 	            'div',
@@ -22385,7 +22399,14 @@
 	    },
 
 	    onShareBtnClick: function onShareBtnClick(evt) {
-	        this.props.callbackChangePanel(_Constants2.default.SHARE);
+	        this.refs.elFile.click();
+	        evt.preventDefault();
+	    },
+
+	    onFileChange: function onFileChange(evt) {
+	        var fd = new FormData();
+	        fd.append("file", evt.target.files[0]);
+	        this.props.callbackShowUpload(fd);
 	    },
 
 	    render: function render() {
@@ -22411,7 +22432,10 @@
 	                { type: 'button', style: btn,
 	                    className: 'btn btn-warning btn-lg', onClick: this.onShareBtnClick },
 	                '分享'
-	            )
+	            ),
+	            React.createElement('input', { type: 'file', ref: 'elFile',
+	                style: { display: "none" },
+	                onChange: this.onFileChange })
 	        );
 	    }
 	});
@@ -22428,6 +22452,10 @@
 
 	var _SixInput2 = _interopRequireDefault(_SixInput);
 
+	var _Constants = __webpack_require__(173);
+
+	var _Constants2 = _interopRequireDefault(_Constants);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var React = __webpack_require__(1);
@@ -22440,8 +22468,8 @@
 	    displayName: 'FetchPanel',
 
 
-	    handleClick: function handleClick(evt) {
-	        this.props.callbackChangePanel(evt.target.value);
+	    onBtnClick: function onBtnClick(evt) {
+	        this.props.callbackChangePanel(_Constants2.default.MAIN);
 	    },
 
 	    render: function render() {
@@ -22457,10 +22485,11 @@
 	        };
 
 	        var styleBtn = {
+	            marginTop: '60px',
 	            fontFamily: "幼圆",
 	            lineHeight: '20px',
-	            fontSize: '20px',
-	            marginLeft: '20px',
+	            fontSize: '20x',
+	            marginLeft: '0px',
 	            verticalAlign: 'middle'
 	        };
 
@@ -22478,8 +22507,11 @@
 	                React.createElement(_SixInput2.default, null),
 	                React.createElement(
 	                    'button',
-	                    { type: 'button', style: styleBtn, className: 'btn btn-warning btn-lg' },
-	                    '获取'
+	                    { type: 'button',
+	                        style: styleBtn,
+	                        className: 'btn btn-warning btn-lg',
+	                        onClick: this.onBtnClick },
+	                    '返回'
 	                )
 	            )
 	        );
@@ -22512,12 +22544,51 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            numbers: [0, 1, 2, 3, "", ""],
-	            current: 2
+	            numbers: ["", "", "", "", "", ""],
+	            current: 0
 	        };
 	    },
 
-	    changeCurrent: function changeCurrent(curr) {
+	    refresh: function refresh() {
+	        this.setState({
+	            numbers: this.state.numbers,
+	            current: this.state.current
+	        });
+	    },
+
+	    setCurrentValue: function setCurrentValue(value) {
+	        var curr = this.state.current;
+	        var curr_value = this.state.numbers[curr];
+
+	        //当前值为空才能进格
+	        //否则是最后一个值，不做任何处理
+	        if (curr_value == '') {
+	            this.state.numbers[curr] = value;
+
+	            curr = curr + 1;
+	            if (curr > 5) curr = 5;
+
+	            this.setState({
+	                numbers: this.state.numbers,
+	                current: curr
+	            });
+	        }
+	    },
+
+	    backspace: function backspace() {
+
+	        var curr = this.state.current;
+	        var value = this.state.numbers[curr];
+
+	        //当前值为空才能退格
+	        //否则可能是最后一个值，只删除值，不退格
+	        if (value == '') {
+	            curr = curr - 1;
+	            if (curr < 0) curr = 0;
+	        }
+
+	        this.state.numbers[curr] = '';
+
 	        this.setState({
 	            numbers: this.state.numbers,
 	            current: curr
@@ -22531,15 +22602,16 @@
 	            return React.createElement(_Input2.default, { key: index,
 	                number: value,
 	                index: index,
-	                focus: index == _this.state.current,
-	                callbackChangeCurrent: _this.changeCurrent
-
+	                isCurrent: _this.state.current == index,
+	                callbackBackspace: _this.backspace,
+	                callbackSetCurrentValue: _this.setCurrentValue,
+	                callbackRefresh: _this.refresh
 	            });
 	        });
 
 	        return React.createElement(
-	            'span',
-	            null,
+	            'div',
+	            { style: { marginTop: "30px" } },
 	            temp
 	        );
 	    }
@@ -22559,51 +22631,74 @@
 	    displayName: 'Input',
 
 
+	    //事件触发顺序如下：mouseDown->focus->mouseUp->click
+	    //如果 click 事件正常触发，则会取消选中效果
+	    //可以在 mouseDown 或者 mouseUp 中阻止默认行为
+	    //这样，click 事件仍然会正常触发，但是不会取消选中效果
+	    //注意：如果在 mouseDown 中阻止默认行为，则要手动触发 focus 事件
+	    onMouseDown: function onMouseDown(evt) {
+	        evt.preventDefault();
+	    },
+
 	    onFocus: function onFocus(evt) {
 	        evt.target.select();
+	        console.log('focus');
 	    },
 
 	    onClick: function onClick(evt) {
-	        evt.proventDefault();
-	        //this.props.callbackChangeCurrent(this.props.index);
+	        this.props.callbackRefresh();
+	        evt.preventDefault();
 	    },
 
-	    onMouseUp: function onMouseUp(evt) {
-	        evt.proventDefault();
+	    onKeyDown: function onKeyDown(evt) {
+	        var key = evt.keyCode;
+
+	        if (key == 8) {
+	            this.props.callbackBackspace();
+	        } else if (key >= 48 && key <= 57) {
+	            this.props.callbackSetCurrentValue(key - 48);
+	        }
+
+	        evt.preventDefault();
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        if (this.props.isCurrent) {
+	            this.refs.domInput.focus();
+	        }
+	    },
+
+	    componentDidUpdate: function componentDidUpdate() {
+	        if (this.props.isCurrent) {
+	            this.refs.domInput.focus();
+	        }
 	    },
 
 	    render: function render() {
 
 	        var styleInput = {
-	            height: '36px',
-	            width: '28px',
-	            lineHeight: '20px',
-	            fontSize: '20px',
-	            marginRight: '3px',
-	            borderRadius: '3px',
-	            border: '1px solid',
+	            height: '72px',
+	            width: '48px',
+	            lineHeight: '40px',
+	            fontSize: '40px',
+	            marginRight: '5px',
+	            borderRadius: '5px',
+	            border: '2px solid',
 	            borderColor: 'orange',
 	            textAlign: 'center',
 	            verticalAlign: 'middle'
 	        };
 
-	        var temp;
-	        if (this.props.focus) {
-	            console.log('aaa');
-	            temp = React.createElement('input', { type: 'text', style: styleInput,
-	                maxLength: '1', value: this.props.number,
-	                autoFocus: true, onFocus: this.onFocus, onMouseUp: this.onMouseUp, onMouseDown: this.onClick
-	            });
-	        } else {
-	            temp = React.createElement('input', { type: 'text', style: styleInput,
-	                maxLength: '1', value: this.props.number, onMouseDown: this.onClick,
-	                onFocus: this.onFocus, onMouseUp: this.onMouseUp });
-	        }
-
 	        return React.createElement(
 	            'span',
 	            null,
-	            temp
+	            React.createElement('input', { type: 'text', ref: 'domInput',
+	                style: styleInput,
+	                maxLength: '1',
+	                value: this.props.number,
+	                onMouseDown: this.onMouseDown,
+	                onClick: this.onClick,
+	                onKeyDown: this.onKeyDown })
 	        );
 	    }
 	});
@@ -22614,7 +22709,7 @@
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var React = __webpack_require__(1);
 
@@ -22622,18 +22717,91 @@
 	 * 按钮面板
 	 */
 	var SharePanel = React.createClass({
-	    displayName: 'SharePanel',
+	    displayName: "SharePanel",
 
 
-	    handleClick: function handleClick(evt) {
-	        this.props.callbackChangePanel(evt.target.value);
+	    getInitialState: function getInitialState() {
+	        return {
+	            percent: 0
+	        };
+	    },
+
+	    componentDidMount: function componentDidMount() {
+
+	        var dom = this.refs.domSpan;
+
+	        //创建请求对象
+	        var oReq = new XMLHttpRequest();
+	        oReq.open("POST", "upload", true);
+
+	        //验证 CSRF 
+	        var metas = document.getElementsByTagName('meta');
+
+	        for (var i = 0; i < metas.length; i++) {
+	            if (metas[i].getAttribute("name") == "csrf-token") {
+	                console.log(metas[i].getAttribute("content"));
+	                oReq.setRequestHeader("X-CSRF-Token", metas[i].getAttribute("content"));
+	            }
+	        }
+
+	        //上传后的回调函数
+	        var that = this;
+
+	        oReq.onload = function (oEvent) {
+
+	            if (oReq.status == 200) {
+	                var obj = JSON.parse(oReq.responseText);
+	                console.log(obj);
+
+	                var dom = that.refs.linkDownload;
+
+	                dom.setAttribute('href', '/fetchcode/' + obj.fetchcode);
+	                dom.setAttribute('download', '提取码：' + obj.fetchcode + "(" + obj.filename + ").txt");
+
+	                dom.click();
+	                that.props.callbackChangePanel(1);
+	            } else {
+	                console.log("Error ");
+	            }
+	        };
+
+	        //上传进程
+	        oReq.upload.onprogress = function (pe) {
+	            if (pe.lengthComputable) {
+	                that.setState({
+	                    percent: Math.round(pe.loaded / pe.total * 1000) / 10 });
+	            } else {
+	                that.setState({ percent: 'Oops' });
+	            }
+	        };
+
+	        //开始上传
+	        oReq.send(this.props.formdata);
 	    },
 
 	    render: function render() {
+
+	        var styleSpan = {
+	            fontFamily: "幼圆",
+	            lineHeight: '240px',
+	            fontSize: '180px',
+	            marginLeft: '60px',
+	            color: "#4EAB4E"
+	        };
+
 	        return React.createElement(
-	            'div',
+	            "div",
 	            null,
-	            'Share Panel!!!'
+	            React.createElement("a", { style: { display: 'none' },
+	                ref: "linkDownload",
+	                href: "",
+	                download: "" }),
+	            React.createElement(
+	                "span",
+	                { style: styleSpan, ref: "domSpan" },
+	                this.state.percent,
+	                "%"
+	            )
 	        );
 	    }
 	});

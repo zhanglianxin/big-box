@@ -11,7 +11,14 @@ var ButtonPanel = React.createClass({
     },
 
     onShareBtnClick: function (evt) {
-        this.props.callbackChangePanel(Panels.SHARE);
+        this.refs.elFile.click();
+        evt.preventDefault();
+    },
+
+    onFileChange: function(evt){
+        var fd = new FormData();
+        fd.append("file", evt.target.files[0]);
+        this.props.callbackShowUpload(fd);
     },
 
     render: function () {
@@ -34,6 +41,11 @@ var ButtonPanel = React.createClass({
                         className="btn btn-warning btn-lg" onClick={this.onShareBtnClick}>
                     分享
                 </button>
+
+                <input type="file"  ref="elFile"
+                        style={{display:"none"}} 
+                        onChange={this.onFileChange} />
+
             </div>
         );
     }

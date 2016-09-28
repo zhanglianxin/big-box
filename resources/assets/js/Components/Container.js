@@ -26,6 +26,12 @@ var Container = React.createClass({
         setTimeout(()=>this.setState({panel: num}),500 );
     },
 
+    showUpload: function (fd) {
+        this.setState({panel:Panels.NONE});
+        setTimeout(()=>this.setState(
+            {panel: Panels.SHARE,formdata:fd}),500 );
+    },
+
     render: function () {
         //标题和面板的容器，样式主要是进行了定位
         var container = {
@@ -38,11 +44,16 @@ var Container = React.createClass({
         if (this.state.panel == Panels.NONE)
             p = (<div key={0} style={{display:'none'}}/>);
         else if (this.state.panel == Panels.MAIN)
-            p = (<ButtonPanel key={Panels.MAIN} callbackChangePanel={this.changePanel}/>);
+            p = (<ButtonPanel key={Panels.MAIN} 
+                callbackChangePanel={this.changePanel}
+                callbackShowUpload={this.showUpload} />);
         else if (this.state.panel == Panels.FETCH)
-            p = (<FetchPanel key={Panels.FETCH} callbackChangePanel={this.changePanel}/>);
+            p = (<FetchPanel key={Panels.FETCH} 
+                    callbackChangePanel={this.changePanel}/>);
         else
-            p = (<SharePanel key={Panels.SHARE} callbackChangePanel={this.changePanel}/>);
+            p = (<SharePanel key={Panels.SHARE} 
+                    callbackChangePanel={this.changePanel}
+                    formdata={this.state.formdata}/>);
 
         return (
             <div style={container}>

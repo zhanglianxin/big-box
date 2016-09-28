@@ -1,55 +1,78 @@
 var React = require('react');
 
 
+
 var Input = React.createClass({
 
+    //事件触发顺序如下：mouseDown->focus->mouseUp->click
+    //如果 click 事件正常触发，则会取消选中效果
+    //可以在 mouseDown 或者 mouseUp 中阻止默认行为
+    //这样，click 事件仍然会正常触发，但是不会取消选中效果
+    //注意：如果在 mouseDown 中阻止默认行为，则要手动触发 focus 事件
+    onMouseDown: function(evt){
+        evt.preventDefault();
+    },
 
     onFocus: function(evt){
         evt.target.select();
+        console.log('focus');
     },
 
 
     onClick: function(evt){
-        evt.proventDefault();
-        //this.props.callbackChangeCurrent(this.props.index);
+        this.props.callbackRefresh();
+        evt.preventDefault();
+    },
+    
+    onKeyDown: function(evt){
+        var key = evt.keyCode;
+ 
+        if(key==8){
+            this.props.callbackBackspace();
+        }
+        else if(key>=48 && key <= 57 ){
+            this.props.callbackSetCurrentValue(key-48);
+        }
+            
+        evt.preventDefault();
     },
 
-    onMouseUp: function(evt){
-        evt.proventDefault();
+    componentDidMount: function() {
+        if(this.props.isCurrent){
+            this.refs.domInput.focus();
+        }
+    },
+
+    componentDidUpdate: function() { 
+        if(this.props.isCurrent){
+            this.refs.domInput.focus();
+        }
     },
 
     render: function () {
 
         var styleInput = {
-            height: '36px',
-            width: '28px',
-            lineHeight: '20px',
-            fontSize: '20px',
-            marginRight: '3px',
-            borderRadius: '3px',
-            border: '1px solid',
+            height: '72px',
+            width: '48px',
+            lineHeight: '40px',
+            fontSize: '40px',
+            marginRight: '5px',
+            borderRadius: '5px',
+            border: '2px solid',
             borderColor: 'orange',
             textAlign: 'center',
             verticalAlign: 'middle'
         };
 
-        var temp;
-        if (this.props.focus) {
-            console.log('aaa');
-            temp = <input type="text" style={styleInput}
-                          maxLength="1" value={this.props.number}
-                          autoFocus onFocus={this.onFocus} onMouseUp={this.onMouseUp} onMouseDown={this.onClick}
-                       />;
-        }
-        else {
-            temp = <input type="text" style={styleInput}
-                          maxLength="1" value={this.props.number} onMouseDown={this.onClick}
-                          onFocus={this.onFocus} onMouseUp={this.onMouseUp}/>;
-        }
-
         return (
             <span>
-                {temp}
+                <input type="text" ref="domInput"
+                    style={styleInput}
+                    maxLength="1" 
+                    value={this.props.number} 
+                    onMouseDown={this.onMouseDown} 
+                    onClick={this.onClick}
+                    onKeyDown={this.onKeyDown}/>
             </span>
         );
     }

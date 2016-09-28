@@ -1,13 +1,14 @@
 var React = require('react');
-import SixInput from './SixInput'
+import SixInput from './SixInput';
+import Panels from './Constants';
 
 /**
  * 获取面板
  */
 var FetchPanel = React.createClass({
 
-    handleClick: function (evt) {
-        this.props.callbackChangePanel(evt.target.value);
+    onBtnClick: function (evt) {
+        this.props.callbackChangePanel(Panels.MAIN);
     },
 
     render: function () {
@@ -24,10 +25,11 @@ var FetchPanel = React.createClass({
 
 
         var styleBtn = {
+            marginTop: '60px',
             fontFamily: "幼圆",
             lineHeight: '20px',
-            fontSize: '20px',
-            marginLeft: '20px',
+            fontSize: '20x',
+            marginLeft: '0px',
             verticalAlign: 'middle'
         };
 
@@ -39,8 +41,11 @@ var FetchPanel = React.createClass({
 
                     <SixInput />
 
-                    <button type="button" style={styleBtn} className="btn btn-warning btn-lg">
-                        获取
+                    <button type="button" 
+                            style={styleBtn} 
+                            className="btn btn-warning btn-lg"
+                            onClick={this.onBtnClick}>
+                        返回
                     </button>
                 </form>
             </div>

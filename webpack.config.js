@@ -78,7 +78,14 @@ var config = {
 
     externals: {
         "jquery": "jQuery"
+    },
+
+    resolve:{
+        alias:{
+            
+        }
     }
+
 };
 
 
