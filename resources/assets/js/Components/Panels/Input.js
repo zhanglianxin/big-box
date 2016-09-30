@@ -26,12 +26,15 @@ var Input = React.createClass({
     
     onKeyDown: function(evt){
         var key = evt.keyCode;
- 
+        console.log(key);
         if(key==8){
             this.props.callbackBackspace();
         }
         else if(key>=48 && key <= 57 ){
             this.props.callbackSetCurrentValue(key-48);
+        }
+        else if((key>=96 && key<=105)){
+            this.props.callbackSetCurrentValue(key-96);
         }
             
         evt.preventDefault();

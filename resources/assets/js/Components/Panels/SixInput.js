@@ -30,14 +30,46 @@ var SixInput = React.createClass({
             this.state.numbers[curr] = value;
 
             curr=curr+1;
-            if(curr>5)
+
+            var bEnd=false;
+
+            if(curr>5){
                 curr=5;
+                bEnd=true;
+            }
 
             this.setState({
                 numbers: this.state.numbers,
                 current:curr
             });
-        } 
+
+            if(bEnd){
+                var fetchcode = this.state.numbers.join("");
+                console.log(fetchcode);
+
+                var oReq = new XMLHttpRequest();
+                oReq.open("GET", "/fileinfo/" + fetchcode, true);
+
+
+                //上传后的回调函数
+                var that=this;
+
+                oReq.onload = function(oEvent) {
+
+                    if (oReq.status == 200) {
+                        var dom = that.refs.linkDownload;
+                        dom.setAttribute('href','/fetchfile/' + fetchcode);
+                        dom.click();
+                        that.props.callbackChangePanel(1);
+                    }
+                    else {
+                        console.log("Error " );
+                    }
+                };
+
+                oReq.send();
+            }
+        }
     },
 
     backspace: function(){
@@ -77,6 +109,10 @@ var SixInput = React.createClass({
 
         return (
             <div style={{marginTop:"30px"}}>
+                <a style={{display: 'none'}}
+                   ref='linkDownload'
+                   href="" />
+
                 {temp}
             </div>
         );

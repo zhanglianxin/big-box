@@ -62,7 +62,7 @@ var SharePanel = React.createClass({
             else {
                 that.setState({percent: 'Oops'}); 
             }
-        } 
+        };
 
         //开始上传
         oReq.send(this.props.formdata);

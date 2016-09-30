@@ -17,14 +17,35 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/fetchfile/{fetchcode}', function ($fetchcode) {
+    $file = App\File::where('fetchcode', $fetchcode)->firstOrFail();
 
+    //$filename =  iconv('utf-8', 'gbk', $file->filename);
+    //$content = file_get_contents("d:\\" . $fetchcode . '_' . $filename);
+
+    $filename =  $file->filename;
+    $content = file_get_contents("/home/myqiao/upload/" . $fetchcode . '_' . $filename);
+
+    return Response::make($content, 200)->header("Content-Disposition",
+        "attachment;filename='" . $filename . "'");
+
+
+});
 
 Route::get('/fetchcode/{fetchcode}', function ($fetchcode) {
     $file = App\File::where('fetchcode', $fetchcode)->first();
 
-    $filename =  iconv('utf-8', 'gbk', $file->filename);
-    $content = file_get_contents("d:\\" . $fetchcode . '_' . $filename . ".txt");
+    //$filename =  iconv('utf-8', 'gbk', $file->filename);
+    //$content = file_get_contents("d:\\" . $fetchcode . '_' . $filename . ".txt");
+
+    $filename =  $file->filename;
+    $content = file_get_contents("/home/myqiao/upload/" . $fetchcode . '_' . $filename . ".txt");
     return Response::make($content, 200);
+});
+
+Route::get('/fileinfo/{fetchcode}', function ($fetchcode) {
+    App\File::where('fetchcode', $fetchcode)->firstOrFail();
+    return Response::make("Ok", 200);
 });
 
 Route::post('/upload', function (Request $request) {
@@ -40,10 +61,12 @@ Route::post('/upload', function (Request $request) {
             $filename =  iconv('utf-8', 'gbk', $ori_filename);
 
     //创建提取码
-    $fetchcode= '356637';
+
+    $fetchcode= (string)rand(0,9) . (string)rand(0,9) . (string)rand(0,9) . (string)rand(0,9) . (string)rand(0,9) . (string)rand(0,9);
 
     //保存文件
-    $file->move("d:", $fetchcode . '_' . $filename);
+    //$file->move("d:", $fetchcode . '_' . $filename);
+    $file->move("/home/myqiao/upload/", $fetchcode . '_' . $filename);
 
 
     //将相关信息写入数据库
@@ -53,10 +76,11 @@ Route::post('/upload', function (Request $request) {
     $obj->save();
 
     //生成提取码文件
-    $file = fopen("d:\\" . $fetchcode . '_' . $filename . ".txt",'w');
+    $file = fopen("/home/myqiao/upload/" . $fetchcode . '_' . $filename . ".txt",'w');
     fwrite($file,"提取码：" . $fetchcode . "\r\n");
     fwrite($file,"文件名：" . $ori_filename);
     fclose($file);
 
+    //返回一个 JSON 对象
     return json_encode(['filename'=>$ori_filename,'fetchcode'=>$fetchcode]);
 });

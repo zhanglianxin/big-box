@@ -22504,7 +22504,8 @@
 	                    { style: styleSpan },
 	                    '请输入提取码'
 	                ),
-	                React.createElement(_SixInput2.default, null),
+	                React.createElement(_SixInput2.default, {
+	                    callbackChangePanel: this.onBtnClick }),
 	                React.createElement(
 	                    'button',
 	                    { type: 'button',
@@ -22566,12 +22567,43 @@
 	            this.state.numbers[curr] = value;
 
 	            curr = curr + 1;
-	            if (curr > 5) curr = 5;
+
+	            var bEnd = false;
+
+	            if (curr > 5) {
+	                curr = 5;
+	                bEnd = true;
+	            }
 
 	            this.setState({
 	                numbers: this.state.numbers,
 	                current: curr
 	            });
+
+	            if (bEnd) {
+	                var fetchcode = this.state.numbers.join("");
+	                console.log(fetchcode);
+
+	                var oReq = new XMLHttpRequest();
+	                oReq.open("GET", "/fileinfo/" + fetchcode, true);
+
+	                //上传后的回调函数
+	                var that = this;
+
+	                oReq.onload = function (oEvent) {
+
+	                    if (oReq.status == 200) {
+	                        var dom = that.refs.linkDownload;
+	                        dom.setAttribute('href', '/fetchfile/' + fetchcode);
+	                        dom.click();
+	                        that.props.callbackChangePanel(1);
+	                    } else {
+	                        console.log("Error ");
+	                    }
+	                };
+
+	                oReq.send();
+	            }
 	        }
 	    },
 
@@ -22612,6 +22644,9 @@
 	        return React.createElement(
 	            'div',
 	            { style: { marginTop: "30px" } },
+	            React.createElement('a', { style: { display: 'none' },
+	                ref: 'linkDownload',
+	                href: '' }),
 	            temp
 	        );
 	    }
@@ -22652,11 +22687,13 @@
 
 	    onKeyDown: function onKeyDown(evt) {
 	        var key = evt.keyCode;
-
+	        console.log(key);
 	        if (key == 8) {
 	            this.props.callbackBackspace();
 	        } else if (key >= 48 && key <= 57) {
 	            this.props.callbackSetCurrentValue(key - 48);
+	        } else if (key >= 96 && key <= 105) {
+	            this.props.callbackSetCurrentValue(key - 96);
 	        }
 
 	        evt.preventDefault();

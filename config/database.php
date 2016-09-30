@@ -48,7 +48,7 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'database' => database_path('database.sqlite'),
+            'database' => '/home/myqiao/db/database.sqlite',
             'prefix' => '',
         ],
 

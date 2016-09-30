@@ -39,12 +39,14 @@ var FetchPanel = React.createClass({
                 <form >
                     <span style={styleSpan}>请输入提取码</span>
 
-                    <SixInput />
+                    <SixInput
+                        callbackChangePanel = {this.onBtnClick}/>
 
                     <button type="button" 
                             style={styleBtn} 
                             className="btn btn-warning btn-lg"
                             onClick={this.onBtnClick}>
+
                         返回
                     </button>
                 </form>
